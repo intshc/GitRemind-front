@@ -1,21 +1,14 @@
 import './App.css';
-import {AppBar, Toolbar, Typography} from "@mui/material";
-import Login from "./components/Login";
+import {BrowserRouter} from "react-router-dom";
+import AppComponent from "./components/AppComponent";
 
 function App() {
-  return (
-          <div className="App">
-            <AppBar position="static"
-                    style={{backgroundColor: 'darkviolet'}}>
-              <Toolbar>
-                <Typography variant="h6">
-                  GitRemind
-                </Typography>
-              </Toolbar>
-            </AppBar>
-            <Login/>
 
-          </div>
+  return (
+          <BrowserRouter>
+            <AppComponent/>
+          </BrowserRouter>
+
   );
 }
 

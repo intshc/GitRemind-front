@@ -1,7 +1,13 @@
 .App {
   text-align: center;
+  width: 100vw;
+  height: 100vh;
 }
-
+#loginButton{
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+}
 .App-logo {
   height: 40vmin;
   pointer-events: none;

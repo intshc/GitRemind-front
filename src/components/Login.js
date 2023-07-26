@@ -9,9 +9,9 @@ function Login() {
   return (
           <div>
             <Stack spacing={2} alignItems='center' mt={2}>
-              <GoogleLoginComponent />
-              <NaverLoginComponent />
-              <GithubLoginComponent />
+              <GoogleLoginComponent/>
+              <NaverLoginComponent/>
+              <GithubLoginComponent/>
             </Stack>
           </div>
   );
