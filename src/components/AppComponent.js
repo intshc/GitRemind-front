@@ -1,11 +1,24 @@
 import {AppBar, Button, Toolbar, Typography} from '@mui/material';
-import {Route, Routes, useLocation} from 'react-router-dom';
+import {Link, Route, Routes, useLocation} from 'react-router-dom';
 import Login from './Login';
+import React from "react";
 
 function AppComponent() {
   const location = useLocation();
   const showLoginButton = location.pathname !== '/login';
 
+
+  function Home() {
+    return (
+            <div>
+              <h1>GitRemind!!</h1>
+              <Link to="/login">
+              {showLoginButton && <Button variant={"contained"} color={"secondary"} size={"large"}
+                                          id={"loginButton"}>로그인 하러 가기</Button>}
+              </Link>
+            </div>
+    );
+  }
 
   return (
           <div className="App">
@@ -14,16 +27,13 @@ function AppComponent() {
                 <Typography variant="h6">GitRemind</Typography>
               </Toolbar>
             </AppBar>
-            <div>
-              <h1>GitRemind!!</h1>
-            </div>
-            {/* 로그인 창 들어가면 버튼 숨기기*/}
-            {showLoginButton && <Button href={'/login'} variant={"contained"} color={"secondary"} size={"large"} id={"loginButton"}>로그인 하러 가기</Button>}
             <Routes>
+              {/* 기본 경로 */}
+              <Route exact path="/" element={<Home/>}/>
               {/* 로그인 화면 */}
-              <Route path="/login" element={<Login/>}/>
-
+              <Route exact path="/login" element={<Login/>}/>
             </Routes>
+
           </div>
   );
 }
