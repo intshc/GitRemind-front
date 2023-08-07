@@ -2,6 +2,7 @@ import {AppBar, Button, Toolbar, Typography} from '@mui/material';
 import {Link, Route, Routes, useLocation} from 'react-router-dom';
 import Login from './Login';
 import React from "react";
+import OAuthCallback from "./OAuthCallback";
 
 function AppComponent() {
   const location = useLocation();
@@ -13,8 +14,8 @@ function AppComponent() {
             <div>
               <h1>GitRemind!!</h1>
               <Link to="/login">
-              {showLoginButton && <Button variant={"contained"} color={"secondary"} size={"large"}
-                                          id={"loginButton"}>로그인 하러 가기</Button>}
+                {showLoginButton && <Button variant={"contained"} color={"secondary"} size={"large"}
+                                            id={"loginButton"}>로그인 하러 가기</Button>}
               </Link>
             </div>
     );
@@ -32,6 +33,8 @@ function AppComponent() {
               <Route exact path="/" element={<Home/>}/>
               {/* 로그인 화면 */}
               <Route exact path="/login" element={<Login/>}/>
+              {/* 콜백 url */}
+              <Route path="login/oauth2/code/:provider" element={<OAuthCallback/>}/>
             </Routes>
 
           </div>

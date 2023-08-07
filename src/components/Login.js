@@ -3,8 +3,7 @@ import {Button, Stack} from "@mui/material";
 import GoogleLoginComponent from "./GoogleLoginComponent";
 import NaverLoginComponent from "./NaverLoginComponent";
 import GithubLoginComponent from "./GithubLoginComponent";
-import {Link, Route, Routes} from "react-router-dom";
-import OAuthCallback from "./OAuthCallback";
+import {Link} from "react-router-dom";
 
 function Login() {
   return (
@@ -17,10 +16,6 @@ function Login() {
                                      id={"loginButton"}>뒤로 가기</Button></Link>
             </Stack>
 
-            {/* 콜백 url */}
-            <Routes>
-              <Route path="/login/oauth2/code/:provider" element={<OAuthCallback/>}/>
-            </Routes>
           </div>
   );
 }
