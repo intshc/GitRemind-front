@@ -3,12 +3,12 @@ import {Link, Route, Routes, useLocation} from 'react-router-dom';
 import Login from './Login';
 import React from "react";
 import OAuthCallback from "./OAuthCallback";
+import axios from "axios";
 
 function AppComponent() {
   const location = useLocation();
   const showLoginButton = location.pathname !== '/login';
-
-
+  axios.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
   function Home() {
     return (
             <div>
