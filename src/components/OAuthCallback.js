@@ -19,7 +19,7 @@ const OAuthCallback = () => {
           throw new Error('Access Token이 없습니다.');
         }
         localStorage.setItem('Authorization', "Bearer " + accessToken);
-        navigate('/');
+        navigate('/main');
       } catch (e) {
         console.error(e);
       }

@@ -1,6 +1,7 @@
 import {AppBar, Button, Toolbar, Typography} from '@mui/material';
 import {Link, Route, Routes, useLocation} from 'react-router-dom';
 import Login from './Login';
+import Main from './Main';
 import React from "react";
 import OAuthCallback from "./OAuthCallback";
 import axios from "axios";
@@ -9,6 +10,7 @@ function AppComponent() {
   const location = useLocation();
   const showLoginButton = location.pathname !== '/login';
   axios.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
+  console.log( localStorage.getItem('Authorization'));
   function Home() {
     return (
             <div>
@@ -35,6 +37,8 @@ function AppComponent() {
               <Route exact path="/login" element={<Login/>}/>
               {/* 콜백 url */}
               <Route path="login/oauth2/code/:provider" element={<OAuthCallback/>}/>
+              {/* 메인 화면 */}
+              <Route exact path="/main" element={<Main/>}/>
             </Routes>
 
           </div>
