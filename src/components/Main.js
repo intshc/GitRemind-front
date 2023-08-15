@@ -16,24 +16,28 @@ function Main() {
         const data = await response.json();
         setName(data.name);
         setPicture(data.picture);
-
-        if (!name || !picture) {
-          throw new Error('유저 정보가 없습니다.');
-        }
       } catch (e) {
         console.error(e);
       }
     }
 
     fetchAccessToken();
-  }, [name, picture, provider]);
+  }, [provider]);
 
-    return (
-            <div>
-              {picture && <img src={picture} alt="프로필 사진"/>}
-              <h2>{name} 님 안녕하세요👋</h2>
-            </div>
-    );
+  const renderContent = () => {
+    if (name && picture) {
+      return (
+              <>
+                <img src={picture} alt="프로필 사진" />
+                <h2>{name} 님 안녕하세요👋</h2>
+              </>
+      );
+    } else {
+      return <p>유저 정보를 읽어오는데 실패했습니다!</p>;
+    }
+  };
+
+  return <div>{renderContent()}</div>;
   }
 
   export default Main;
