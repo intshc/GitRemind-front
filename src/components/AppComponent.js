@@ -5,6 +5,7 @@ import Main from './Main';
 import React from "react";
 import OAuthCallback from "./OAuthCallback";
 import axios from "axios";
+import GitChart from "./GitChart";
 
 function AppComponent() {
   const location = useLocation();
@@ -39,6 +40,7 @@ function AppComponent() {
               <Route path="login/oauth2/code/:provider" element={<OAuthCallback/>}/>
               {/* 메인 화면 */}
               <Route exact path="/main" element={<Main/>}/>
+              <Route exact path="/gitchart" element={<GitChart/>}/>
             </Routes>
 
           </div>

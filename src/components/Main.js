@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {Button} from "@mui/material";
 import CustomFetch from "../utils/CustomFetch";
 
@@ -8,6 +8,7 @@ function Main() {
   const [picture, setPicture] = useState('');
   const {provider} = useParams();
   const [text, setText] = useState('');
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     setText(event.target.value);
@@ -17,12 +18,11 @@ function Main() {
     async function fetchAccessToken() {
       try {
         const response = await CustomFetch(`/user/api`);
-        // axiosInstance.get(`/user/api`);
         if (!response.ok) {
           throw new Error('서버에 문제가 발생했습니다. 상태 코드:', response.status);
         }
         const data = await response.json();
-        setName(data.name);
+        setName(data.username);
         setPicture(data.picture);
       } catch (e) {
         console.error(e);
@@ -52,6 +52,7 @@ function Main() {
       if (!response.ok) {
         throw new Error("서버에 문제가 발생했습니다. 상태 코드:", response.status);
       }
+      navigate('/gitChart');
     } catch (e) {
       console.error(e);
     }
@@ -68,6 +69,10 @@ function Main() {
                   <input type="text" value={text} onChange={handleChange}/>&nbsp;
                   <Button type="submit" variant={"contained"} color={"secondary"} size={"small"}>제출</Button>
                 </form>
+                <br></br>
+                <br></br>
+                <Link to={"/"}><Button variant={"contained"} color={"secondary"} size={"large"}
+                >홈으로 가기</Button></Link>
               </>
       );
     } else {
