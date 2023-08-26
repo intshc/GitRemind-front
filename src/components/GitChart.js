@@ -1,13 +1,13 @@
 import React, {useCallback, useEffect, useState} from "react";
 import CustomFetch from "../utils/CustomFetch";
 import {Button} from "@mui/material";
-import {Link, useParams} from "react-router-dom";
+import {Link} from "react-router-dom";
 import axios from "axios";
 
 function GitChart() {
   const [gitName, setGitName] = useState('');
-  const {provider} = useParams();
   const [name, setName] = useState('');
+  const [hasCommitsToday, setHasCommitsToday] = useState(false);
   const getTodayCommit = useCallback(async (username) => {
     try {
       const gitKey = process.env.REACT_APP_GITHUB_TOKEN;
@@ -37,9 +37,9 @@ function GitChart() {
       const totalContributions = response.data.data.user.contributionsCollection.contributionCalendar.totalContributions;
 
       if (totalContributions > 0) {
-        //오늘 커밋 했을 때
+        setHasCommitsToday(true);
       } else {
-        //오늘 커밋 안되어 있을 때
+        setHasCommitsToday(false);
       }
 
     } catch (error) {
@@ -67,13 +67,14 @@ function GitChart() {
     }
 
     fetchAccessToken();
-  }, [provider, getTodayCommit]);
+  }, [getTodayCommit]);
 
   const renderContent2 = () => {
     if (gitName) {
       return (
               <>
                 <br></br>
+                {hasCommitsToday ? "✅오늘 커밋을 하셨군요!!" : "❎오늘 커밋이 안되어 있습니다."}
                 <h2>{gitName}님의 잔디🌱</h2>
                 <img src={`https://ghchart.rshah.org/${gitName}`} alt={"잔디"} />
                 <br></br>
