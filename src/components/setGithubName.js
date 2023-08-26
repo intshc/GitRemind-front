@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Link, useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
 import CustomFetch from "../utils/CustomFetch";
 
 function SetGithubName() {
   const [name, setName] = useState('');
   const [picture, setPicture] = useState('');
-  const {provider} = useParams();
   const [text, setText] = useState('');
   const navigate = useNavigate();
 
@@ -24,13 +23,17 @@ function SetGithubName() {
         const data = await response.json();
         setName(data.username);
         setPicture(data.picture);
+
+        if (data.gitName) {
+          navigate('/main');
+        }
       } catch (e) {
         console.error(e);
       }
     }
 
     fetchAccessToken();
-  }, [provider]);
+  },);
 
   // 사용자 이름을 받아 서버에 전송하는 함수
   const handleSubmit = async (event) => {
