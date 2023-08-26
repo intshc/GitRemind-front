@@ -1,5 +1,16 @@
 import React, {useState} from "react";
-import {Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Stack} from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Stack
+} from "@mui/material";
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
 import GoogleLoginComponent from "./GoogleLoginComponent";
 import NaverLoginComponent from "./NaverLoginComponent";
 import GithubLoginComponent from "./GithubLoginComponent";
@@ -27,9 +38,10 @@ function Login() {
         }
       } catch (error) {
         console.error(error);
+        setOpen(true);
       }
     } else {
-      // 로그인 처리
+      // 토큰 없으면 안내 창 띄우기
       setOpen(true);
     }
   }
@@ -41,10 +53,16 @@ function Login() {
   return (
           <div>
             <Stack spacing={2} alignItems='center' mt={2}>
+              <Avatar sx={{m: 1, bgcolor: 'secondary.main'}}>
+                <LockOutlinedIcon/>
+              </Avatar>
+              <Typography component="h1" variant="h5">
+                Sign in
+              </Typography>
               <GoogleLoginComponent/>
               <NaverLoginComponent/>
               <GithubLoginComponent/>
-              <Button onClick={handleLogin}>이미 로그인을 하셨나요?</Button>
+              <Button onClick={handleLogin} color={"secondary"}>✔ 이미 로그인을 하셨나요?</Button>
               <Link to={"/"}><Button variant={"contained"} color={"secondary"} size={"large"}
                                      id={"loginButton"}>뒤로 가기</Button></Link>
 
@@ -57,7 +75,7 @@ function Login() {
                 <DialogTitle id="alert-dialog-title">{"Token Error"}</DialogTitle>
                 <DialogContent>
                   <DialogContentText id="alert-dialog-description">
-                    로그인이 안되어 있습니다.
+                    로그인이 안 되어 있습니다.
                   </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -68,7 +86,6 @@ function Login() {
               </Dialog>
 
             </Stack>
-
           </div>
   );
 }

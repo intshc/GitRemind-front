@@ -1,13 +1,101 @@
-import React from "react";
+import React, {useCallback, useEffect, useState} from "react";
+import CustomFetch from "../utils/CustomFetch";
+import {Button} from "@mui/material";
+import {Link, useParams} from "react-router-dom";
+import axios from "axios";
 
 function GitChart() {
+  const [gitName, setGitName] = useState('');
+  const {provider} = useParams();
+  const [name, setName] = useState('');
+  const getTodayCommit = useCallback(async (username) => {
+    try {
+      const gitKey = process.env.REACT_APP_GITHUB_TOKEN;
+      const response = await axios({
+        url: 'https://api.github.com/graphql',
+        method: 'post',
+        headers: {
+          'Authorization': `Bearer ${gitKey}`,
+        },
+        data: {
+          query: `
+            query($username:String!) { 
+              user(login:$username) { 
+                contributionsCollection(from:"${new Date().toISOString()}") { 
+                  contributionCalendar { 
+                    totalContributions
+                  } 
+                }
+              }
+            }`,
+          variables: {
+            username,
+          },
+        },
+      });
 
+      const totalContributions = response.data.data.user.contributionsCollection.contributionCalendar.totalContributions;
 
-  return (
-          <div>
+      if (totalContributions > 0) {
+        //오늘 커밋 했을 때
+      } else {
+        //오늘 커밋 안되어 있을 때
+      }
 
-          </div>
-  );
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    async function fetchAccessToken() {
+      try {
+        const response = await CustomFetch(`/user/api`);
+
+        if (!response.ok) throw new Error(`서버에 문제가 발생했습니다. 상태 코드: ${response.status}`);
+
+        const data = await response.json();
+
+        setGitName(data.gitName);
+        setName(data.username);
+        // gitName 갱신 후 getTodayCommit 호출
+        getTodayCommit(data.gitName);
+
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    fetchAccessToken();
+  }, [provider, getTodayCommit]);
+
+  const renderContent2 = () => {
+    if (gitName) {
+      return (
+              <>
+                <br></br>
+                <h2>{gitName}님의 잔디🌱</h2>
+                <img src={`https://ghchart.rshah.org/${gitName}`} alt={"잔디"} />
+                <br></br>
+                <Link to={"/"}><Button variant={"contained"} color={"secondary"} size={"large"}
+                >홈으로 가기</Button></Link>
+              </>
+      );
+    } else if(name){
+      return (
+              <div><p>깃허브 이름을 입력해주세요</p>
+
+                </div>
+      );
+    }
+    else {
+      return (
+              <div><p>사용자 정보를 읽어오는데 실패했습니다!</p>
+                <Link to={"/"}><Button variant={"contained"} color={"secondary"} size={"large"}
+                >홈으로 가기</Button></Link></div>);
+    }}
+  return <div>{renderContent2()}</div>;
+
 }
 
 export default GitChart;

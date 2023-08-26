@@ -11,7 +11,6 @@ function AppComponent() {
   const location = useLocation();
   const showLoginButton = location.pathname !== '/login';
   axios.defaults.headers.common['Authorization'] = localStorage.getItem('Authorization');
-  console.log( localStorage.getItem('Authorization'));
   function Home() {
     return (
             <div>
