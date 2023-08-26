@@ -1,11 +1,11 @@
 import {AppBar, Button, Toolbar, Typography} from '@mui/material';
 import {Link, Route, Routes, useLocation} from 'react-router-dom';
 import Login from './Login';
-import Main from './Main';
+import SetGithubName from './setGithubName';
 import React from "react";
 import OAuthCallback from "./OAuthCallback";
 import axios from "axios";
-import GitChart from "./GitChart";
+import Main from "./Main";
 
 function AppComponent() {
   const location = useLocation();
@@ -36,10 +36,10 @@ function AppComponent() {
               {/* 로그인 화면 */}
               <Route exact path="/login" element={<Login/>}/>
               {/* 콜백 url */}
-              <Route path="login/oauth2/code/:provider" element={<OAuthCallback/>}/>
+              <Route path="/login/oauth2/code/:provider" element={<OAuthCallback/>}/>
               {/* 메인 화면 */}
+              <Route exact path="/user/set-gitName" element={<SetGithubName/>}/>
               <Route exact path="/main" element={<Main/>}/>
-              <Route exact path="/gitchart" element={<GitChart/>}/>
             </Routes>
 
           </div>

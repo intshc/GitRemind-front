@@ -19,7 +19,7 @@ const OAuthCallback = () => {
           throw new Error('Access Token이 없습니다.');
         }
         localStorage.setItem('Authorization', "Bearer " + accessToken);
-        navigate('/main');
+        navigate('/user/set-gitName');
       } catch (e) {
         console.error(e);
       }

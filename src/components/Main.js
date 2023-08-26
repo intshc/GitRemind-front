@@ -1,90 +1,102 @@
-import React, {useEffect, useState} from "react";
-import {Link, useNavigate, useParams} from "react-router-dom";
-import {Button} from "@mui/material";
+import React, {useCallback, useEffect, useState} from "react";
 import CustomFetch from "../utils/CustomFetch";
+import {Button} from "@mui/material";
+import {Link} from "react-router-dom";
+import axios from "axios";
 
 function Main() {
+  const [gitName, setGitName] = useState('');
   const [name, setName] = useState('');
-  const [picture, setPicture] = useState('');
-  const {provider} = useParams();
-  const [text, setText] = useState('');
-  const navigate = useNavigate();
+  const [hasCommitsToday, setHasCommitsToday] = useState(false);
+  const getTodayCommit = useCallback(async (username) => {
+    try {
+      const gitKey = process.env.REACT_APP_GITHUB_TOKEN;
+      const response = await axios({
+        url: 'https://api.github.com/graphql',
+        method: 'post',
+        headers: {
+          'Authorization': `Bearer ${gitKey}`,
+        },
+        data: {
+          query: `
+            query($username:String!) { 
+              user(login:$username) { 
+                contributionsCollection(from:"${new Date().toISOString()}") { 
+                  contributionCalendar { 
+                    totalContributions
+                  } 
+                }
+              }
+            }`,
+          variables: {
+            username,
+          },
+        },
+      });
 
-  const handleChange = (event) => {
-    setText(event.target.value);
-  };
+      const totalContributions = response.data.data.user.contributionsCollection.contributionCalendar.totalContributions;
+
+      if (totalContributions > 0) {
+        setHasCommitsToday(true);
+      } else {
+        setHasCommitsToday(false);
+      }
+
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
 
   useEffect(() => {
     async function fetchAccessToken() {
       try {
         const response = await CustomFetch(`/user/api`);
-        if (!response.ok) {
-          throw new Error('서버에 문제가 발생했습니다. 상태 코드:', response.status);
-        }
+
+        if (!response.ok) throw new Error(`서버에 문제가 발생했습니다. 상태 코드: ${response.status}`);
+
         const data = await response.json();
+
+        setGitName(data.gitName);
         setName(data.username);
-        setPicture(data.picture);
+        // gitName 갱신 후 getTodayCommit 호출
+        getTodayCommit(data.gitName);
+
       } catch (e) {
         console.error(e);
       }
     }
 
     fetchAccessToken();
-  }, [provider]);
-
-  // 사용자 이름을 받아 서버에 전송하는 함수
-  const handleSubmit = async (event) => {
-    event.preventDefault(); // 새로 고침 방지
-
-    const token = localStorage.getItem('Authorization');
-    try {
-      const response = await CustomFetch(`/api/github-name`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token,
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          githubName: text,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("서버에 문제가 발생했습니다. 상태 코드:", response.status);
-      }
-      navigate('/gitChart');
-    } catch (e) {
-      console.error(e);
-    }
-  };
+  }, [getTodayCommit]);
 
   const renderContent = () => {
-    if (name && picture) {
+    if (gitName) {
       return (
               <>
-                <img src={picture} alt="프로필 사진"/>
-                <h2>{name} 님 안녕하세요👋</h2>
-                <h3>깃허브 이름을 등록해주세요!!</h3>
-                <form onSubmit={handleSubmit}>
-                  <input type="text" value={text} onChange={handleChange}/>&nbsp;
-                  <Button type="submit" variant={"contained"} color={"secondary"} size={"small"}>제출</Button>
-                </form>
                 <br></br>
+                {hasCommitsToday ? "✅오늘 커밋을 하셨군요!!" : "❎오늘 커밋이 안되어 있습니다."}
+                <h2>{gitName}님의 잔디🌱</h2>
+                <img src={`https://ghchart.rshah.org/${gitName}`} alt={"잔디"} />
                 <br></br>
                 <Link to={"/"}><Button variant={"contained"} color={"secondary"} size={"large"}
                 >홈으로 가기</Button></Link>
               </>
       );
-    } else {
+    } else if(name){
       return (
-              <div><p>유저 정보를 읽어오는데 실패했습니다!</p>
-                <Link to={"/"}><Button variant={"contained"} color={"secondary"} size={"large"}
-                >홈으로 가기</Button></Link></div>
-      )
-    }
-  };
+              <div><p>깃허브 이름을 입력해주세요</p>
 
+                </div>
+      );
+    }
+    else {
+      return (
+              <div><p>사용자 정보를 읽어오는데 실패했습니다!</p>
+                <Link to={"/"}><Button variant={"contained"} color={"secondary"} size={"large"}
+                >홈으로 가기</Button></Link></div>);
+    }}
   return <div>{renderContent()}</div>;
+
 }
 
 export default Main;

@@ -31,7 +31,7 @@ function Login() {
 
         if (response.data.isValid) {
           // 토큰이 유효하다면 다음 화면으로 이동
-          navigate('/gitChart');
+          navigate('/main');
         } else {
           // 토큰이 유효하지 않은 경우
           throw new Error('토큰이 유효하지 않습니다.', response.status);
