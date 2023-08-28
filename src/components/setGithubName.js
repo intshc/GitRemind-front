@@ -14,7 +14,7 @@ function SetGithubName() {
   };
 
   useEffect(() => {
-    async function fetchAccessToken() {
+    async function getUserInfo() {
       try {
         const response = await CustomFetch(`/user/api`);
         if (!response.ok) {
@@ -32,7 +32,7 @@ function SetGithubName() {
       }
     }
 
-    fetchAccessToken();
+    getUserInfo();
   },);
 
   // 사용자 이름을 받아 서버에 전송하는 함수

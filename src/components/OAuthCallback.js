@@ -8,10 +8,11 @@ const OAuthCallback = () => {
   useEffect(() => {
     async function fetchAccessToken() {
       try {
-        const response = await fetch(`/user/api`);
+        const response = await fetch(`/api/auth/access-token`);
         if (!response.ok) {
           throw new Error('서버에 문제가 발생했습니다. 상태 코드:', response.status);
         }
+        //todo accessToken 요청해서 얻는거로 바꾸기
         const data = await response.json();
         const accessToken = data.accessToken;
 

@@ -48,7 +48,7 @@ function Main() {
   }, []);
 
   useEffect(() => {
-    async function fetchAccessToken() {
+    async function getUserInfo() {
       try {
         const response = await CustomFetch(`/user/api`);
 
@@ -66,7 +66,7 @@ function Main() {
       }
     }
 
-    fetchAccessToken();
+    getUserInfo();
   }, [getTodayCommit]);
 
   const renderContent = () => {
@@ -74,27 +74,27 @@ function Main() {
       return (
               <>
                 <br></br>
-                {hasCommitsToday ? "✅오늘 커밋을 하셨군요!!" : "❎오늘 커밋이 안되어 있습니다."}
+                {hasCommitsToday ? "✅오늘 커밋을 하셨군요!!" : "❎오늘 커밋이 안 되어 있습니다."}
                 <h2>{gitName}님의 잔디🌱</h2>
-                <img src={`https://ghchart.rshah.org/${gitName}`} alt={"잔디"} />
+                <img src={`https://ghchart.rshah.org/${gitName}`} alt={"잔디"}/>
                 <br></br>
                 <Link to={"/"}><Button variant={"contained"} color={"secondary"} size={"large"}
                 >홈으로 가기</Button></Link>
               </>
       );
-    } else if(name){
+    } else if (name) {
       return (
               <div><p>깃허브 이름을 입력해주세요</p>
 
-                </div>
+              </div>
       );
-    }
-    else {
+    } else {
       return (
               <div><p>사용자 정보를 읽어오는데 실패했습니다!</p>
                 <Link to={"/"}><Button variant={"contained"} color={"secondary"} size={"large"}
                 >홈으로 가기</Button></Link></div>);
-    }}
+    }
+  }
   return <div>{renderContent()}</div>;
 
 }
