@@ -53,7 +53,7 @@ function User() {
         method: 'PATCH',
         body: JSON.stringify({
           githubName: gitName,
-          userName: name
+          username: name
         }),
       });
 
@@ -100,7 +100,7 @@ function User() {
                                 <TextField
                                         label="Name"
                                         variant="outlined"
-                                        value={name}
+                                        value={name||""}
                                         onChange={(e) => setName(e.target.value)}
                                 />
                               </Box>
@@ -111,7 +111,7 @@ function User() {
                                         id="github-name"
                                         label="GitHub Name"
                                         variant="outlined"
-                                        value={gitName}
+                                        value={gitName||""}
                                         onChange={(e) => setGitName(e.target.value)}
                                 />
                               </Box><Box mb={3} sx={{ display: 'flex', alignItems: 'center' }}>
@@ -120,7 +120,7 @@ function User() {
                                       disabled
                                       id="outlined-disabled"
                                       label="Email"
-                                      value={email}
+                                      value={email||""}
                               />
                             </Box>
                             </form>
