@@ -16,7 +16,7 @@ function SetGithubName() {
   useEffect(() => {
     async function getUserInfo() {
       try {
-        const response = await CustomFetch(`/user/api`);
+        const response = await CustomFetch(`/api/user`);
         if (!response.ok) {
           throw new Error('서버에 문제가 발생했습니다. 상태 코드:', response.status);
         }
@@ -33,18 +33,16 @@ function SetGithubName() {
     }
 
     getUserInfo();
-  },);
+  },[navigate]);
 
   // 사용자 이름을 받아 서버에 전송하는 함수
   const handleSubmit = async (event) => {
     event.preventDefault(); // 새로 고침 방지
 
-    const token = localStorage.getItem('Authorization');
     try {
       const response = await CustomFetch(`/api/github-name`, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token,
+          'Content-Type': 'application/json'
         },
         method: 'POST',
         body: JSON.stringify({

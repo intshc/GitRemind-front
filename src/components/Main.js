@@ -43,20 +43,27 @@ function Main() {
       }
 
     } catch (error) {
-      console.error(error);
+      console.error('Error Message:', error.message);
+      if (error.response) {
+        console.error('Response Data:', error.response.data);
+        console.error('Response Status:', error.response.status);
+        console.error('Response Headers:', error.response.headers);
+      } else if (error.request) {
+        console.error('Request:', error.request);
+      }
     }
   }, []);
 
   useEffect(() => {
     async function getUserInfo() {
       try {
-        const response = await CustomFetch(`/user/api`);
+        const response = await CustomFetch(`/api/user`);
 
         if (!response.ok) throw new Error(`서버에 문제가 발생했습니다. 상태 코드: ${response.status}`);
 
         const data = await response.json();
 
-        setGitName(data.gitName);
+        setGitName(data.githubName);
         setName(data.username);
         // gitName 갱신 후 getTodayCommit 호출
         getTodayCommit(data.gitName);
@@ -78,8 +85,11 @@ function Main() {
                 <h2>{gitName}님의 잔디🌱</h2>
                 <img src={`https://ghchart.rshah.org/${gitName}`} alt={"잔디"}/>
                 <br></br>
+                <Link to={"/user"}><Button variant={"contained"} color={"secondary"} size={"large"}
+                >사용자 정보</Button></Link>
+                &nbsp;
                 <Link to={"/"}><Button variant={"contained"} color={"secondary"} size={"large"}
-                >홈으로 가기</Button></Link>
+                >맨 처음으로 가기</Button></Link>
               </>
       );
     } else if (name) {

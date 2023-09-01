@@ -6,6 +6,7 @@ import React from "react";
 import OAuthCallback from "./OAuthCallback";
 import axios from "axios";
 import Main from "./Main";
+import User from "./User";
 
 function AppComponent() {
   const location = useLocation();
@@ -40,6 +41,7 @@ function AppComponent() {
               {/* 메인 화면 */}
               <Route exact path="/user/set-gitName" element={<SetGithubName/>}/>
               <Route exact path="/main" element={<Main/>}/>
+              <Route excat path="/user" element={<User/>}/>
             </Routes>
 
           </div>
