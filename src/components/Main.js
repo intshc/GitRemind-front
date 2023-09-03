@@ -66,7 +66,7 @@ function Main() {
         setGitName(data.githubName);
         setName(data.username);
         // gitName 갱신 후 getTodayCommit 호출
-        getTodayCommit(data.gitName);
+        getTodayCommit(data.githubName);
 
       } catch (e) {
         console.error(e);

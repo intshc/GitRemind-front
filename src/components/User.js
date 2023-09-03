@@ -8,7 +8,7 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import {Link} from "react-router-dom";
 import TextField from '@mui/material/TextField';
-import {Button} from "@mui/material";
+import {Button, Snackbar} from "@mui/material";
 import CustomFetch from "../utils/CustomFetch";
 
 function User() {
@@ -19,6 +19,8 @@ function User() {
   const defaultTheme = createTheme();
   const [tempName,setTempName] = useState('');
   const [tempGitName,setTempGitName] = useState('');
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
   useEffect(() => {
     async function getUserInfo() {
       try {
@@ -29,10 +31,10 @@ function User() {
         const data = await response.json();
         setName(data.username);
         setPicture(data.picture);
-        setGitName(data.gitName);
+        setGitName(data.githubName);
         setEmail(data.email);
         setTempName(data.username);
-        setTempGitName(data.gitName);
+        setTempGitName(data.githubName);
       } catch (e) {
         console.error(e);
       }
@@ -60,10 +62,20 @@ function User() {
       if (!response.ok) {
         throw new Error("서버에 문제가 발생했습니다. 상태 코드:", response.status);
       }
+      setOpenSnackbar(true);
     } catch (e) {
       console.error(e);
     }
   };
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpenSnackbar(false);
+  };
+
   const renderContent = () => {
     return (
             <>
@@ -145,7 +157,12 @@ function User() {
                       </Grid>
                       <Button variant="contained" color="primary" onClick={handleSubmit}>
                       수정
-                    </Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    </Button>
+                      <Snackbar
+                            open={openSnackbar}
+                            autoHideDuration={2000}
+                            onClose={handleClose}
+                            message="수정되었습니다!" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       <Link to={"/main"}><Button variant={"contained"} color={"secondary"} size={"large"}
                       >홈으로 가기</Button></Link>
                     </Container>

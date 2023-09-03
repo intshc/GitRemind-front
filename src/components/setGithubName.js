@@ -39,10 +39,12 @@ function SetGithubName() {
   const handleSubmit = async (event) => {
     event.preventDefault(); // 새로 고침 방지
 
+    const token = localStorage.getItem('Authorization');
     try {
       const response = await CustomFetch(`/api/github-name`, {
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': token
         },
         method: 'POST',
         body: JSON.stringify({
