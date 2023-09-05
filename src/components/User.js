@@ -17,8 +17,6 @@ function User() {
   const [picture, setPicture] = useState('');
   const [email, setEmail] = useState('');
   const defaultTheme = createTheme();
-  const [tempName,setTempName] = useState('');
-  const [tempGitName,setTempGitName] = useState('');
   const [openSnackbar, setOpenSnackbar] = useState(false);
 
   useEffect(() => {
@@ -33,8 +31,6 @@ function User() {
         setPicture(data.picture);
         setGitName(data.githubName);
         setEmail(data.email);
-        setTempName(data.username);
-        setTempGitName(data.githubName);
       } catch (e) {
         console.error(e);
       }
@@ -149,9 +145,9 @@ function User() {
                                   }}
                           >
                             &nbsp;<img src={picture} alt="프로필 사진" className={"Picture"}/>
-                            이름: {tempName}
+                            이름: {name}
                             <br></br>
-                            깃허브 닉네임: {tempGitName}
+                            깃허브 닉네임: {gitName}
                           </Paper>
                         </Grid>
                       </Grid>
