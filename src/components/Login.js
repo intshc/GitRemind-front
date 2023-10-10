@@ -24,8 +24,9 @@ function Login() {
     const token = localStorage.getItem('Authorization');
     if (token) {
       try {
+        const serverUrl = process.env.REACT_APP_BASE_URL;
         // 서버 측에 토큰 검증 요청
-        const response = await axios.get('/api/auth/verify-token', {
+        const response = await axios.get(`${serverUrl}/api/auth/verify-token`, {
           headers: {Authorization: token}
         });
 

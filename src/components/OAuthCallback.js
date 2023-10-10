@@ -8,7 +8,9 @@ const OAuthCallback = () => {
   useEffect(() => {
     async function fetchAccessToken() {
       try {
-        const response = await fetch(`/api/auth/access-token`);
+        const serverUrl = process.env.REACT_APP_BASE_URL;
+        const response = await fetch(`${serverUrl}/api/auth/access-token`);
+
         if (!response.ok) {
           throw new Error('서버에 문제가 발생했습니다. 상태 코드:', response.status);
         }

@@ -22,7 +22,8 @@ function User() {
   useEffect(() => {
     async function getUserInfo() {
       try {
-        const response = await CustomFetch(`/api/user`);
+        const serverUrl = process.env.RREACT_APP_BASE_URL;
+        const response = await fetch(`${serverUrl}/api/user`);
         if (!response.ok) {
           throw new Error('서버에 문제가 발생했습니다. 상태 코드:', response.status);
         }

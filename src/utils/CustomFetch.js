@@ -1,4 +1,5 @@
 async function customFetch(url, options = {}) {
+  const serverUrl = process.env.REACT_APP_BASE_URL;
   options.headers = options.headers || {};
 
   // 인증 헤더 추가 (토큰이 있는 경우)
@@ -7,11 +8,11 @@ async function customFetch(url, options = {}) {
     options.headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(url, options);
+  const response = await fetch(`${serverUrl}${url}`, options);
 
   // 401 응답이 있는 경우 토큰 갱신 시도
   if (response.status === 401) {
-    const refreshTokenResponse = await fetch('/auth/refresh', {
+    const refreshTokenResponse = await fetch(`${serverUrl}/auth/refresh`, {
       method: 'POST',
     });
 
@@ -20,7 +21,7 @@ async function customFetch(url, options = {}) {
       localStorage.setItem('Authorization', 'Bearer ' + data.accessToken);
       // 기존 요청 재시도
       options.headers['Authorization'] = `Bearer ${data.accessToken}`;
-      return fetch(url, options);
+      return fetch(`${serverUrl}${url}`, options);
     }
   }
 
